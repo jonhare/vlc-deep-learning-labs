@@ -76,7 +76,7 @@ plt.show(block=False)
 
 You can see that downloading and loading the MNIST dataset is as easy as calling the `mnist.load_data()` function. Running the above example, you should see the image below.
 
-![Examples from the MNIST dataset](mnist-sample.png "Examples from the MNIST dataset")
+![Examples from the MNIST dataset](mnist-vis.png "Examples from the MNIST dataset")
 
 ## Baseline Multi-Layer Perceptron Model
 
