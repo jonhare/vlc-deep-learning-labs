@@ -386,6 +386,7 @@ def larger_model():
 	model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 	return model
 ```
+
 Like the previous two experiments, the model is fit over 10 epochs with a batch size of 200.
 
 ```python
