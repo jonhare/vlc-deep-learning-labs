@@ -49,7 +49,7 @@ Excellent results achieve a prediction error of less than 1%. State-of-the-art p
 
 The Keras deep learning library provides a convenience method for loading the MNIST dataset.
 
-The dataset is downloaded automatically the first time this function is called and is stored in your home directory in ~/.keras/datasets/mnist.pkl.gz as a 15MB file.
+The dataset is downloaded automatically the first time this function is called and is stored in your home directory in `~/.keras/datasets/mnist.pkl.gz` as a 15MB file.
 
 This is very handy for developing and testing deep learning models.
 
@@ -171,7 +171,7 @@ scores = model.evaluate(X_test, y_test, verbose=0)
 print("Baseline Error: %.2f%%" % (100-scores[1]*100))
 ```
 
-Running the example might take a few minutes when run on a CPU. You should see the output below. This very simple network defined in very few lines of code achieves a respectable error rate of 1.74%.
+Running the example might take a few minutes when run on a CPU (probably around 11s per epoch, but might be slower if you're sharing the machine with others). You should see the output below. This very simple network defined in very few lines of code achieves a respectable error rate of 1.74%.
 
 	Train on 60000 samples, validate on 10000 samples
 	Epoch 1/10
@@ -196,11 +196,91 @@ Running the example might take a few minutes when run on a CPU. You should see t
 	12s - loss: 0.0072 - acc: 0.9989 - val_loss: 0.0577 - val_acc: 0.9826
 	Baseline Error: 1.74%
 
+## Speeding things up
+
+By default, the Theano backend will use the CPU for computation. It's easy to switch to the GPU though by setting an environment variable. Assuming you've saved the MLP code in a file called `keras-mnist-mlp.py`, then the following will run the code on the GPU:
+
+	THEANO_FLAGS=device=gpu,floatX=float32 python keras-mnist-mlp.py 
+
+You should see an immediate speed-up:
+
+	Using Theano backend.
+	Using gpu device 0: GeForce GT 650M (CNMeM is disabled, cuDNN Mixed dnn version. The header is from one version, but we link with a different version (5103, 4004))
+	Train on 60000 samples, validate on 10000 samples
+	Epoch 1/10
+	3s - loss: 0.2790 - acc: 0.9203 - val_loss: 0.1423 - val_acc: 0.9580
+	Epoch 2/10
+	3s - loss: 0.1122 - acc: 0.9679 - val_loss: 0.0986 - val_acc: 0.9702
+	Epoch 3/10
+	3s - loss: 0.0723 - acc: 0.9791 - val_loss: 0.0788 - val_acc: 0.9746
+	Epoch 4/10
+	3s - loss: 0.0509 - acc: 0.9855 - val_loss: 0.0784 - val_acc: 0.9765
+	Epoch 5/10
+	3s - loss: 0.0365 - acc: 0.9899 - val_loss: 0.0635 - val_acc: 0.9792
+	Epoch 6/10
+	3s - loss: 0.0264 - acc: 0.9928 - val_loss: 0.0637 - val_acc: 0.9791
+	Epoch 7/10
+	3s - loss: 0.0185 - acc: 0.9959 - val_loss: 0.0606 - val_acc: 0.9806
+	Epoch 8/10
+	3s - loss: 0.0147 - acc: 0.9969 - val_loss: 0.0637 - val_acc: 0.9810
+	Epoch 9/10
+	3s - loss: 0.0107 - acc: 0.9982 - val_loss: 0.0608 - val_acc: 0.9814
+	Epoch 10/10
+	3s - loss: 0.0073 - acc: 0.9987 - val_loss: 0.0592 - val_acc: 0.9826
+	Baseline Error: 1.74%
+
+So, on my laptop, we've gone from ~11 secs per epoch to ~3s. Using the Titan X, you can expect times of around 1s per epoch. You can make Theano use the GPU persistently by adding `THEANO_FLAGS=device=gpu,floatX=float32` to your `~/.bash_profile`.
+
+We can also quickly switch the Keras backend to use TensorFlow rather than Theano using another environment variable:
+
+	KERAS_BACKEND=tensorflow python keras-mnist-mlp.py 
+
+which should result in the following:
+
+	Using TensorFlow backend.
+	I tensorflow/stream_executor/dso_loader.cc:105] successfully opened CUDA library libcublas.so locally
+	I tensorflow/stream_executor/dso_loader.cc:105] successfully opened CUDA library libcudnn.so locally
+	I tensorflow/stream_executor/dso_loader.cc:105] successfully opened CUDA library libcufft.so locally
+	I tensorflow/stream_executor/dso_loader.cc:105] successfully opened CUDA library libcuda.so.1 locally
+	I tensorflow/stream_executor/dso_loader.cc:105] successfully opened CUDA library libcurand.so locally
+	I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:900] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+	I tensorflow/core/common_runtime/gpu/gpu_init.cc:102] Found device 0 with properties: 
+	name: GeForce GTX TITAN X
+	major: 5 minor: 2 memoryClockRate (GHz) 1.076
+	pciBusID 0000:01:00.0
+	Total memory: 12.00GiB
+	Free memory: 11.87GiB
+	I tensorflow/core/common_runtime/gpu/gpu_init.cc:126] DMA: 0 
+	I tensorflow/core/common_runtime/gpu/gpu_init.cc:136] 0:   Y 
+	I tensorflow/core/common_runtime/gpu/gpu_device.cc:755] Creating TensorFlow device (/gpu:0) -> (device: 0, name: GeForce GTX TITAN X, pci bus id: 0000:01:00.0)
+	Train on 60000 samples, validate on 10000 samples
+	Epoch 1/10
+	1s - loss: 0.2790 - acc: 0.9203 - val_loss: 0.1423 - val_acc: 0.9580
+	Epoch 2/10
+	1s - loss: 0.1122 - acc: 0.9677 - val_loss: 0.0989 - val_acc: 0.9698
+	Epoch 3/10
+	1s - loss: 0.0723 - acc: 0.9789 - val_loss: 0.0789 - val_acc: 0.9741
+	Epoch 4/10
+	1s - loss: 0.0509 - acc: 0.9853 - val_loss: 0.0779 - val_acc: 0.9761
+	Epoch 5/10
+	1s - loss: 0.0365 - acc: 0.9897 - val_loss: 0.0630 - val_acc: 0.9795
+	Epoch 6/10
+	1s - loss: 0.0262 - acc: 0.9931 - val_loss: 0.0639 - val_acc: 0.9794
+	Epoch 7/10
+	1s - loss: 0.0184 - acc: 0.9958 - val_loss: 0.0604 - val_acc: 0.9804
+	Epoch 8/10
+	1s - loss: 0.0147 - acc: 0.9968 - val_loss: 0.0622 - val_acc: 0.9814
+	Epoch 9/10
+	1s - loss: 0.0106 - acc: 0.9981 - val_loss: 0.0608 - val_acc: 0.9814
+	Epoch 10/10
+	1s - loss: 0.0074 - acc: 0.9987 - val_loss: 0.0582 - val_acc: 0.9828
+	Baseline Error: 1.72%
+
 ## Simple Convolutional Neural Network for MNIST
 
-Now that we have seen how to load the MNIST dataset and train a simple multi-layer perceptron model on it, it is time to develop a more sophisticated convolutional neural network or CNN model.
+Now that we have seen how to load the MNIST dataset and train a simple multi-layer perceptron model on it, we can now start to develop a more sophisticated convolutional neural network or CNN model.
 
-Keras does provide a lot of capability for creating convolutional neural networks.
+Keras provides a lot of capability for creating CNNs, and includes a large number of layer types and activation functions.
 
 In this section we will create a simple CNN for MNIST that demonstrates how to use all of the aspects of a modern CNN implementation, including Convolutional layers, Pooling layers and Dropout layers.
 
