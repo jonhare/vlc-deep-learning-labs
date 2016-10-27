@@ -71,7 +71,7 @@ plt.imshow(X_train[2], cmap=plt.get_cmap('gray'))
 plt.subplot(224)
 plt.imshow(X_train[3], cmap=plt.get_cmap('gray'))
 # show the plot
-plt.show(block=False)
+plt.show()
 ```
 
 You can see that downloading and loading the MNIST dataset is as easy as calling the `mnist.load_data()` function. Running the above example, you should see the image below.
@@ -111,7 +111,7 @@ Now we can load the MNIST dataset using the Keras helper function.
 
 The training dataset is structured as a 3-dimensional array of instance, image width and image height. For a multi-layer perceptron model we must reduce the images down into a vector of pixels. In this case the 28×28 sized images will be 784 pixel input values.
 
-We can do this transform easily using the reshape() function on the NumPy array. We can also reduce our memory requirements by forcing the precision of the pixel values to be 32 bit, the default precision used by Keras anyway.
+We can do this transform easily using the `reshape()` function on the NumPy array. We can also reduce our memory requirements by forcing the precision of the pixel values to be 32 bit, the default precision used by Keras anyway.
 
 ```python
 # flatten 28*28 images to a 784 vector for each image
@@ -130,7 +130,7 @@ X_test = X_test / 255
 
 Finally, the output variable is an integer from 0 to 9. This is a multi-class classification problem. As such, it is good practice to use a one hot encoding of the class values, transforming the vector of class integers into a binary matrix.
 
-We can easily do this using the built-in np_utils.to_categorical() helper function in Keras.
+We can easily do this using the built-in `np_utils.to_categorical()` helper function in Keras.
 
 ```python
 # one hot encode outputs
