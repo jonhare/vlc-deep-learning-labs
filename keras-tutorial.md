@@ -171,30 +171,31 @@ scores = model.evaluate(X_test, y_test, verbose=0)
 print("Baseline Error: %.2f%%" % (100-scores[1]*100))
 ```
 
-Running the example might take a few minutes when run on a CPU (probably around 11s per epoch, but might be slower if you're sharing the machine with others). You should see the output below. This very simple network defined in very few lines of code achieves a respectable error rate of 1.74%.
+Running the example might take a few minutes when run on a CPU (probably around 11s per epoch, but might be slower if you're sharing the machine with others). You should see the output below. This very simple network defined in very few lines of code achieves a respectable error rate of about 1.8%.
 
+	Using Theano backend.
 	Train on 60000 samples, validate on 10000 samples
 	Epoch 1/10
-	11s - loss: 0.2791 - acc: 0.9203 - val_loss: 0.1422 - val_acc: 0.9583
+	4s - loss: 0.2791 - acc: 0.9203 - val_loss: 0.1420 - val_acc: 0.9579
 	Epoch 2/10
-	11s - loss: 0.1121 - acc: 0.9680 - val_loss: 0.0994 - val_acc: 0.9697
+	4s - loss: 0.1122 - acc: 0.9679 - val_loss: 0.0992 - val_acc: 0.9699
 	Epoch 3/10
-	12s - loss: 0.0724 - acc: 0.9790 - val_loss: 0.0786 - val_acc: 0.9748
+	5s - loss: 0.0724 - acc: 0.9791 - val_loss: 0.0784 - val_acc: 0.9741
 	Epoch 4/10
-	12s - loss: 0.0508 - acc: 0.9856 - val_loss: 0.0790 - val_acc: 0.9762
+	4s - loss: 0.0509 - acc: 0.9853 - val_loss: 0.0775 - val_acc: 0.9775
 	Epoch 5/10
-	12s - loss: 0.0365 - acc: 0.9897 - val_loss: 0.0631 - val_acc: 0.9795
+	5s - loss: 0.0366 - acc: 0.9896 - val_loss: 0.0637 - val_acc: 0.9791
 	Epoch 6/10
-	12s - loss: 0.0263 - acc: 0.9931 - val_loss: 0.0644 - val_acc: 0.9798
+	5s - loss: 0.0264 - acc: 0.9930 - val_loss: 0.0641 - val_acc: 0.9802
 	Epoch 7/10
-	12s - loss: 0.0188 - acc: 0.9956 - val_loss: 0.0613 - val_acc: 0.9803
+	4s - loss: 0.0185 - acc: 0.9958 - val_loss: 0.0608 - val_acc: 0.9805
 	Epoch 8/10
-	12s - loss: 0.0149 - acc: 0.9967 - val_loss: 0.0628 - val_acc: 0.9814
+	5s - loss: 0.0147 - acc: 0.9968 - val_loss: 0.0623 - val_acc: 0.9815
 	Epoch 9/10
-	12s - loss: 0.0108 - acc: 0.9980 - val_loss: 0.0595 - val_acc: 0.9816
+	4s - loss: 0.0109 - acc: 0.9981 - val_loss: 0.0600 - val_acc: 0.9815
 	Epoch 10/10
-	12s - loss: 0.0072 - acc: 0.9989 - val_loss: 0.0577 - val_acc: 0.9826
-	Baseline Error: 1.74%
+	4s - loss: 0.0072 - acc: 0.9988 - val_loss: 0.0619 - val_acc: 0.9821
+	Baseline Error: 1.79%
 
 ## Speeding things up
 
@@ -205,76 +206,76 @@ By default, the Theano backend will use the CPU for computation. It's easy to sw
 You should see an immediate speed-up:
 
 	Using Theano backend.
-	Using gpu device 0: GeForce GT 650M (CNMeM is disabled, cuDNN Mixed dnn version. The header is from one version, but we link with a different version (5103, 4004))
+	Using gpu device 0: GeForce GT 650M (CNMeM is disabled, cuDNN 5105)
 	Train on 60000 samples, validate on 10000 samples
 	Epoch 1/10
 	3s - loss: 0.2790 - acc: 0.9203 - val_loss: 0.1423 - val_acc: 0.9580
 	Epoch 2/10
-	3s - loss: 0.1122 - acc: 0.9679 - val_loss: 0.0986 - val_acc: 0.9702
+	3s - loss: 0.1122 - acc: 0.9677 - val_loss: 0.0991 - val_acc: 0.9701
 	Epoch 3/10
-	3s - loss: 0.0723 - acc: 0.9791 - val_loss: 0.0788 - val_acc: 0.9746
+	3s - loss: 0.0723 - acc: 0.9791 - val_loss: 0.0785 - val_acc: 0.9745
 	Epoch 4/10
-	3s - loss: 0.0509 - acc: 0.9855 - val_loss: 0.0784 - val_acc: 0.9765
+	3s - loss: 0.0509 - acc: 0.9856 - val_loss: 0.0788 - val_acc: 0.9764
 	Epoch 5/10
-	3s - loss: 0.0365 - acc: 0.9899 - val_loss: 0.0635 - val_acc: 0.9792
+	3s - loss: 0.0366 - acc: 0.9895 - val_loss: 0.0631 - val_acc: 0.9790
 	Epoch 6/10
-	3s - loss: 0.0264 - acc: 0.9928 - val_loss: 0.0637 - val_acc: 0.9791
+	3s - loss: 0.0261 - acc: 0.9932 - val_loss: 0.0641 - val_acc: 0.9789
 	Epoch 7/10
-	3s - loss: 0.0185 - acc: 0.9959 - val_loss: 0.0606 - val_acc: 0.9806
+	3s - loss: 0.0185 - acc: 0.9956 - val_loss: 0.0612 - val_acc: 0.9807
 	Epoch 8/10
-	3s - loss: 0.0147 - acc: 0.9969 - val_loss: 0.0637 - val_acc: 0.9810
+	3s - loss: 0.0147 - acc: 0.9968 - val_loss: 0.0634 - val_acc: 0.9814
 	Epoch 9/10
-	3s - loss: 0.0107 - acc: 0.9982 - val_loss: 0.0608 - val_acc: 0.9814
+	3s - loss: 0.0109 - acc: 0.9980 - val_loss: 0.0602 - val_acc: 0.9817
 	Epoch 10/10
-	3s - loss: 0.0073 - acc: 0.9987 - val_loss: 0.0592 - val_acc: 0.9826
-	Baseline Error: 1.74%
+	3s - loss: 0.0075 - acc: 0.9987 - val_loss: 0.0599 - val_acc: 0.9820
+	Baseline Error: 1.80%
 
-So, on my laptop, we've gone from ~11 secs per epoch to ~3s. Using the Titan X, you can expect times of around 1s per epoch. You can make Theano use the GPU persistently by adding `THEANO_FLAGS=device=gpu,floatX=float32` to your `~/.bash_profile`.
+So, on my laptop (2012 MacBook Pro with a GT 650M), we've gone from ~5 secs per epoch to ~3s. Using the Titan X, you can expect times of around 1s per epoch. You can make Theano use the GPU persistently by adding `THEANO_FLAGS=device=gpu,floatX=float32` to your `~/.bash_profile`.
 
 We can also quickly switch the Keras backend to use TensorFlow rather than Theano using another environment variable:
 
 	KERAS_BACKEND=tensorflow python keras-mnist-mlp.py 
 
-which should result in the following:
+which should result in something like the following (note this is on the Titan X; on my laptop using the GPU it takes ~5s/epoch):
 
 	Using TensorFlow backend.
-	I tensorflow/stream_executor/dso_loader.cc:105] successfully opened CUDA library libcublas.so locally
-	I tensorflow/stream_executor/dso_loader.cc:105] successfully opened CUDA library libcudnn.so locally
-	I tensorflow/stream_executor/dso_loader.cc:105] successfully opened CUDA library libcufft.so locally
-	I tensorflow/stream_executor/dso_loader.cc:105] successfully opened CUDA library libcuda.so.1 locally
-	I tensorflow/stream_executor/dso_loader.cc:105] successfully opened CUDA library libcurand.so locally
-	I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:900] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
-	I tensorflow/core/common_runtime/gpu/gpu_init.cc:102] Found device 0 with properties: 
+	I tensorflow/stream_executor/dso_loader.cc:111] successfully opened CUDA library libcublas.so locally
+	I tensorflow/stream_executor/dso_loader.cc:111] successfully opened CUDA library libcudnn.so locally
+	I tensorflow/stream_executor/dso_loader.cc:111] successfully opened CUDA library libcufft.so locally
+	I tensorflow/stream_executor/dso_loader.cc:111] successfully opened CUDA library libcuda.so.1 locally
+	I tensorflow/stream_executor/dso_loader.cc:111] successfully opened CUDA library libcurand.so locally
+	I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:925] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+	I tensorflow/core/common_runtime/gpu/gpu_device.cc:951] Found device 0 with properties: 
 	name: GeForce GTX TITAN X
 	major: 5 minor: 2 memoryClockRate (GHz) 1.076
 	pciBusID 0000:01:00.0
-	Total memory: 12.00GiB
-	Free memory: 11.87GiB
-	I tensorflow/core/common_runtime/gpu/gpu_init.cc:126] DMA: 0 
-	I tensorflow/core/common_runtime/gpu/gpu_init.cc:136] 0:   Y 
-	I tensorflow/core/common_runtime/gpu/gpu_device.cc:755] Creating TensorFlow device (/gpu:0) -> (device: 0, name: GeForce GTX TITAN X, pci bus id: 0000:01:00.0)
+	Total memory: 11.92GiB
+	Free memory: 11.81GiB
+	I tensorflow/core/common_runtime/gpu/gpu_device.cc:972] DMA: 0 
+	I tensorflow/core/common_runtime/gpu/gpu_device.cc:982] 0:   Y 
+	I tensorflow/core/common_runtime/gpu/gpu_device.cc:1041] Creating TensorFlow device (/gpu:0) -> (device: 0, name: GeForce GTX TITAN X, pci bus id: 0000:01:00.0)
 	Train on 60000 samples, validate on 10000 samples
 	Epoch 1/10
-	1s - loss: 0.2790 - acc: 0.9203 - val_loss: 0.1423 - val_acc: 0.9580
+	1s - loss: 0.2790 - acc: 0.9203 - val_loss: 0.1423 - val_acc: 0.9579
 	Epoch 2/10
-	1s - loss: 0.1122 - acc: 0.9677 - val_loss: 0.0989 - val_acc: 0.9698
+	1s - loss: 0.1121 - acc: 0.9679 - val_loss: 0.0992 - val_acc: 0.9696
 	Epoch 3/10
-	1s - loss: 0.0723 - acc: 0.9789 - val_loss: 0.0789 - val_acc: 0.9741
+	1s - loss: 0.0722 - acc: 0.9790 - val_loss: 0.0781 - val_acc: 0.9745
 	Epoch 4/10
-	1s - loss: 0.0509 - acc: 0.9853 - val_loss: 0.0779 - val_acc: 0.9761
+	1s - loss: 0.0508 - acc: 0.9853 - val_loss: 0.0782 - val_acc: 0.9761
 	Epoch 5/10
-	1s - loss: 0.0365 - acc: 0.9897 - val_loss: 0.0630 - val_acc: 0.9795
+	1s - loss: 0.0365 - acc: 0.9898 - val_loss: 0.0640 - val_acc: 0.9790
 	Epoch 6/10
-	1s - loss: 0.0262 - acc: 0.9931 - val_loss: 0.0639 - val_acc: 0.9794
+	1s - loss: 0.0264 - acc: 0.9930 - val_loss: 0.0643 - val_acc: 0.9797
 	Epoch 7/10
-	1s - loss: 0.0184 - acc: 0.9958 - val_loss: 0.0604 - val_acc: 0.9804
+	1s - loss: 0.0185 - acc: 0.9956 - val_loss: 0.0621 - val_acc: 0.9799
 	Epoch 8/10
-	1s - loss: 0.0147 - acc: 0.9968 - val_loss: 0.0622 - val_acc: 0.9814
+	1s - loss: 0.0145 - acc: 0.9970 - val_loss: 0.0617 - val_acc: 0.9810
 	Epoch 9/10
-	1s - loss: 0.0106 - acc: 0.9981 - val_loss: 0.0608 - val_acc: 0.9814
+	1s - loss: 0.0104 - acc: 0.9981 - val_loss: 0.0602 - val_acc: 0.9817
 	Epoch 10/10
-	1s - loss: 0.0074 - acc: 0.9987 - val_loss: 0.0582 - val_acc: 0.9828
-	Baseline Error: 1.72%
+	1s - loss: 0.0072 - acc: 0.9987 - val_loss: 0.0590 - val_acc: 0.9826
+	Baseline Error: 1.74%
 
 ## Simple Convolutional Neural Network for MNIST
 
