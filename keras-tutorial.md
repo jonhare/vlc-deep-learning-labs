@@ -55,22 +55,24 @@ This is very handy for developing and testing deep learning models.
 
 To demonstrate how easy it is to load the MNIST dataset, we will first write a little script to download and visualize the first 4 images in the training dataset.
 
-	# Plot ad hoc mnist instances
-	from keras.datasets import mnist
-	import matplotlib.pyplot as plt
-	# load (downloaded if needed) the MNIST dataset
-	(X_train, y_train), (X_test, y_test) = mnist.load_data()
-	# plot 4 images as gray scale
-	plt.subplot(221)
-	plt.imshow(X_train[0], cmap=plt.get_cmap('gray'))
-	plt.subplot(222)
-	plt.imshow(X_train[1], cmap=plt.get_cmap('gray'))
-	plt.subplot(223)
-	plt.imshow(X_train[2], cmap=plt.get_cmap('gray'))
-	plt.subplot(224)
-	plt.imshow(X_train[3], cmap=plt.get_cmap('gray'))
-	# show the plot
-	plt.show()
+```python
+# Plot ad hoc mnist instances
+from keras.datasets import mnist
+import matplotlib.pyplot as plt
+# load (downloaded if needed) the MNIST dataset
+(X_train, y_train), (X_test, y_test) = mnist.load_data()
+# plot 4 images as gray scale
+plt.subplot(221)
+plt.imshow(X_train[0], cmap=plt.get_cmap('gray'))
+plt.subplot(222)
+plt.imshow(X_train[1], cmap=plt.get_cmap('gray'))
+plt.subplot(223)
+plt.imshow(X_train[2], cmap=plt.get_cmap('gray'))
+plt.subplot(224)
+plt.imshow(X_train[3], cmap=plt.get_cmap('gray'))
+# show the plot
+plt.show()
+```
 
 You can see that downloading and loading the MNIST dataset is as easy as calling the mnist.load_data() function. Running the above example, you should see the image below.
 
