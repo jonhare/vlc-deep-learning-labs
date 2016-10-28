@@ -1,20 +1,22 @@
 # Learning to Deep Learn using Python, Keras, Theano, TensorFlow and a GPU
 
 ## Introduction and Acknowledgements
-This tutorial is largely based on the Jason Brownlee's ["Handwritten Digit Recognition using Convolutional Neural Networks in Python with Keras"](http://machinelearningmastery.com/handwritten-digit-recognition-using-convolutional-neural-networks-python-keras/). A number of changes have been made to ensure that it better fits our format, and we've added additional bits and exercises.
+This tutorial is largely based on the Jason Brownlee's ["Handwritten Digit Recognition using Convolutional Neural Networks in Python with Keras"](http://machinelearningmastery.com/handwritten-digit-recognition-using-convolutional-neural-networks-python-keras/). A number of changes have been made to ensure that it better fits our format, and we've added additional bits and exercises throughout.
 
 A popular demonstration of the capability of deep learning techniques is object recognition in image data. The "hello world" of object recognition for machine learning and deep learning is the MNIST dataset for handwritten digit recognition.
 
-In this post you will discover how to develop a deep learning model to achieve near state of the art performance on the MNIST handwritten digit recognition task in Python using the Keras deep learning library.
+In this tutorial you will discover how to develop a deep learning model to achieve near state of the art performance on the MNIST handwritten digit recognition task in Python using the Keras deep learning library.
 
 Through this tutorial you'll learn how to:
 
 * How to load the MNIST dataset in Keras.
 * How to develop and evaluate a baseline neural network model for the MNIST problem.
+* How to switch the backends used by Keras and run your code on the GPU.
 * How to implement and evaluate a simple Convolutional Neural Network for MNIST.
 * How to implement a close to state-of-the-art deep learning model for MNIST.
-* How to implement advanced network features like branching.
+* How to serialise and deserialise trained models.
 * How to load your own image created outside of the MNIST dataset, and pass it through the network.
+* How to implement advanced network features like branching.
 * How to visualise the filters learned by the network.
 
 ## Prerequisites
@@ -311,7 +313,7 @@ numpy.random.seed(seed)
 
 Next we need to load the MNIST dataset and reshape it so that it is suitable for use training a CNN. In Keras, the layers used for two-dimensional convolutions expect pixel values with the dimensions [pixels][width][height].
 
-In the case of RGB, the first dimension pixels would be 3 for the red, green and blue components and it would be like having 3 image inputs for every color image. In the case of MNIST where the pixel values are gray scale, the pixel dimension is set to 1.
+In the case of RGB, the first dimension pixels would be 3 for the red, green and blue components and it would be like having 3 image inputs for every colour image. In the case of MNIST where the pixel values are greyscale, the pixel dimension is set to 1.
 
 
 ```python
@@ -344,6 +346,7 @@ Convolutional neural networks are more complex than standard multi-layer percept
 4 Next is a layer that converts the 2D matrix data to a vector called Flatten. It allows the output to be processed by standard fully connected layers.
 5 Next a fully connected layer with 128 neurons and rectifier activation function.
 6 Finally, the output layer has 10 neurons for the 10 classes and a softmax activation function to output probability-like predictions for each class.
+
 As before, the model is trained using logarithmic loss and the ADAM gradient descent algorithm.
 
 ```python
@@ -375,30 +378,32 @@ print("Baseline Error: %.2f%%" % (100-scores[1]*100))
 
 Running the example, the accuracy on the training and validation test is printed each epoch and at the end of the classification error rate is printed.
 
-Epochs may take 60 to 90 seconds to run on the CPU, or about 15 minutes in total depending on your hardware. You can see that the network achieves an error rate of 1.10, which is better than our simple multi-layer perceptron model above.
+Epochs may take a second or so on the Titan X, although will take a fair bit longer on the CPU (perhaps ~46s per epoch). You can see that the network achieves an error rate of 1.08, which is better than the simple multi-layer perceptron model above.
 
+	Using Theano backend.
+	Using gpu device 0: GeForce GTX TITAN X (CNMeM is disabled, cuDNN 5105)
 	Train on 60000 samples, validate on 10000 samples
 	Epoch 1/10
-	84s - loss: 0.2065 - acc: 0.9370 - val_loss: 0.0759 - val_acc: 0.9756
+	1s - loss: 0.2422 - acc: 0.9315 - val_loss: 0.0750 - val_acc: 0.9773
 	Epoch 2/10
-	84s - loss: 0.0644 - acc: 0.9802 - val_loss: 0.0475 - val_acc: 0.9837
+	1s - loss: 0.0729 - acc: 0.9780 - val_loss: 0.0521 - val_acc: 0.9830
 	Epoch 3/10
-	89s - loss: 0.0447 - acc: 0.9864 - val_loss: 0.0402 - val_acc: 0.9877
+	1s - loss: 0.0497 - acc: 0.9852 - val_loss: 0.0394 - val_acc: 0.9855
 	Epoch 4/10
-	88s - loss: 0.0346 - acc: 0.9891 - val_loss: 0.0358 - val_acc: 0.9881
+	1s - loss: 0.0413 - acc: 0.9869 - val_loss: 0.0432 - val_acc: 0.9857
 	Epoch 5/10
-	89s - loss: 0.0271 - acc: 0.9913 - val_loss: 0.0342 - val_acc: 0.9891
+	1s - loss: 0.0324 - acc: 0.9899 - val_loss: 0.0393 - val_acc: 0.9864
 	Epoch 6/10
-	89s - loss: 0.0210 - acc: 0.9933 - val_loss: 0.0391 - val_acc: 0.9880
+	1s - loss: 0.0285 - acc: 0.9911 - val_loss: 0.0430 - val_acc: 0.9863
 	Epoch 7/10
-	89s - loss: 0.0182 - acc: 0.9943 - val_loss: 0.0345 - val_acc: 0.9887
+	1s - loss: 0.0225 - acc: 0.9928 - val_loss: 0.0323 - val_acc: 0.9893
 	Epoch 8/10
-	89s - loss: 0.0142 - acc: 0.9956 - val_loss: 0.0323 - val_acc: 0.9904
+	1s - loss: 0.0200 - acc: 0.9938 - val_loss: 0.0361 - val_acc: 0.9889
 	Epoch 9/10
-	88s - loss: 0.0120 - acc: 0.9961 - val_loss: 0.0343 - val_acc: 0.9901
+	1s - loss: 0.0155 - acc: 0.9952 - val_loss: 0.0328 - val_acc: 0.9893
 	Epoch 10/10
-	89s - loss: 0.0108 - acc: 0.9965 - val_loss: 0.0353 - val_acc: 0.9890
-	Classification Error: 1.10%
+	1s - loss: 0.0144 - acc: 0.9953 - val_loss: 0.0321 - val_acc: 0.9892
+	Baseline Error: 1.08%
 
 ## Larger Convolutional Neural Network for MNIST
 
@@ -482,31 +487,52 @@ print("Baseline Error: %.2f%%" % (100-scores[1]*100))
 
 Running the example prints accuracy on the training and validation datasets each epoch and a final classification error rate.
 
-The model takes about 100 seconds to run per epoch. This slightly larger model achieves the respectable classification error rate of 0.89%.
+The model takes about a couple of seconds to run per epoch on the Titan GPU (CPU run times are around 60s/epoch and the 650M is around 11s). This slightly larger model achieves the respectable classification error rate of 0.89%.
 
 	Using Theano backend.
+	Using gpu device 0: GeForce GTX TITAN X (CNMeM is disabled, cuDNN 5105)
 	Train on 60000 samples, validate on 10000 samples
 	Epoch 1/10
-	102s - loss: 0.3263 - acc: 0.8962 - val_loss: 0.0690 - val_acc: 0.9785
+	2s - loss: 0.3777 - acc: 0.8796 - val_loss: 0.0800 - val_acc: 0.9749
 	Epoch 2/10
-	103s - loss: 0.0858 - acc: 0.9737 - val_loss: 0.0430 - val_acc: 0.9862
+	1s - loss: 0.0917 - acc: 0.9713 - val_loss: 0.0464 - val_acc: 0.9856
 	Epoch 3/10
-	102s - loss: 0.0627 - acc: 0.9806 - val_loss: 0.0379 - val_acc: 0.9875
+	1s - loss: 0.0666 - acc: 0.9790 - val_loss: 0.0373 - val_acc: 0.9878
 	Epoch 4/10
-	101s - loss: 0.0501 - acc: 0.9842 - val_loss: 0.0342 - val_acc: 0.9891
+	1s - loss: 0.0529 - acc: 0.9830 - val_loss: 0.0329 - val_acc: 0.9888
 	Epoch 5/10
-	102s - loss: 0.0444 - acc: 0.9856 - val_loss: 0.0338 - val_acc: 0.9889
+	1s - loss: 0.0457 - acc: 0.9856 - val_loss: 0.0307 - val_acc: 0.9895
 	Epoch 6/10
-	101s - loss: 0.0389 - acc: 0.9878 - val_loss: 0.0302 - val_acc: 0.9897
+	2s - loss: 0.0396 - acc: 0.9878 - val_loss: 0.0299 - val_acc: 0.9900
 	Epoch 7/10
-	101s - loss: 0.0335 - acc: 0.9894 - val_loss: 0.0260 - val_acc: 0.9916
+	2s - loss: 0.0364 - acc: 0.9881 - val_loss: 0.0239 - val_acc: 0.9919
 	Epoch 8/10
-	102s - loss: 0.0305 - acc: 0.9898 - val_loss: 0.0267 - val_acc: 0.9911
+	1s - loss: 0.0330 - acc: 0.9892 - val_loss: 0.0288 - val_acc: 0.9907
 	Epoch 9/10
-	101s - loss: 0.0296 - acc: 0.9904 - val_loss: 0.0211 - val_acc: 0.9933
+	1s - loss: 0.0300 - acc: 0.9902 - val_loss: 0.0215 - val_acc: 0.9930
 	Epoch 10/10
-	102s - loss: 0.0272 - acc: 0.9911 - val_loss: 0.0269 - val_acc: 0.9911
-	Classification Error: 0.89%
+	1s - loss: 0.0267 - acc: 0.9913 - val_loss: 0.0250 - val_acc: 0.9911
+	Baseline Error: 0.89%
+
+## Saving models
+
+Being able to train a model is fine, but in practice once we've trained the model we probably want to save the result so we can reuse it at a later time. Keras makes saving the model into an `HDF5` format file easy using `model.save(filepath)`. This will save the architecture of the model, the weights of the model, the training configuration (loss, optimizer) and the state of the optimizer, allowing to resume training exactly where you left off should you wish to continue training with more epochs.
+
+__Can you modify the code for the previous CNN architecture to save the trained result into a file called `bettercnn.h5`?__
+
+## Reading models and propagating input
+
+At this point, we know how to train a model and how to save the result. Lets assume we're in the business of building a real system for handwritten character recognition; we need to be able to read in a previously trained model and forward propagate an image from outside the MNIST dataset through it in order to generate a prediction. Let's build some code to do just that:
+
+```python
+
+
+
+```
+
+
+
+
 
 This is not an optimized network topology. Nor is a reproduction of a network topology from a recent paper. There is a lot of opportunity for you to tune and improve upon this model.
 
