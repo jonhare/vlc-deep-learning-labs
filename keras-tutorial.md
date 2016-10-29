@@ -16,8 +16,8 @@ Through this tutorial you'll learn how to:
 * How to implement a close to state-of-the-art deep learning model for MNIST.
 * How to serialise and deserialise trained models.
 * How to load your own image created outside of the MNIST dataset, and pass it through the network.
-* How to implement advanced network features like branching.
 * How to visualise the filters learned by the network.
+* How to implement advanced network features like branching and custom layers.
 
 ## Prerequisites
 To use this tutorial you'll use the Python 2 language with the `keras` deep learning library and the `theano` and `tensorflow` backends. We'll also use the `scikit-learn` and `numpy` packages.
@@ -518,7 +518,7 @@ The model takes about a couple of seconds to run per epoch on the Titan GPU (CPU
 
 Being able to train a model is fine, but in practice once we've trained the model we probably want to save the result so we can reuse it at a later time. Keras makes saving the model into an `HDF5` format file easy using `model.save(filepath)`. This will save the architecture of the model, the weights of the model, the training configuration (loss, optimizer) and the state of the optimizer, allowing to resume training exactly where you left off should you wish to continue training with more epochs.
 
-> __Can you modify the code for the previous CNN architecture to save the trained result into a file called `bettercnn.h5`?__
+> __Exercise:__ Can you modify the code for the previous CNN architecture to save the trained result into a file called `bettercnn.h5`?
 
 ## Reading models and propagating input
 
@@ -557,8 +557,15 @@ Using gpu device 0: GeForce GT 650M (CNMeM is disabled, cuDNN 5105)
 predicted digit: 1
 ```
 
+> __Exercise:__ Try with some other images and see what results you get. You can replace the 1 in the `wget` url above with anything between 0 and 9 to download some different digits, or create your own 24x24 pixel images.
 
-__Try with some other images and see what results you get. You can replace the 1 in the `wget` url above with anything between 0 and 9 to download some different digits, or create your own 24x24 pixel images.__
+> __Exercise:__ Rather than just outputting the most likely class, modify the code to print the weight distribution over the output layer using the `model.predict()` method instead of `model.predict_classes()`.
+
+## Visualising the first layers filters and responses
+
+## More advanced network topologies and custom layers
+
+
 
 
 This is not an optimized network topology. Nor is a reproduction of a network topology from a recent paper. There is a lot of opportunity for you to tune and improve upon this model.
