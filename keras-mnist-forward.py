@@ -16,4 +16,4 @@ image = image.reshape(1,1,28,28)
 
 # forward propagate and print index of most likely class 
 # (for MNIST this corresponds one-to-one with the digit)
-print model.predict_classes(image)[0]
+print("predicted digit: "+str(model.predict_classes(image)[0]))

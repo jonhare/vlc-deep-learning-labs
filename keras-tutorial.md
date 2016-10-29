@@ -525,13 +525,40 @@ __Can you modify the code for the previous CNN architecture to save the trained 
 At this point, we know how to train a model and how to save the result. Lets assume we're in the business of building a real system for handwritten character recognition; we need to be able to read in a previously trained model and forward propagate an image from outside the MNIST dataset through it in order to generate a prediction. Let's build some code to do just that:
 
 ```python
+import sys
+from keras.models import load_model
+from scipy.misc import imread
 
+# load a model
+model = load_model('bettercnn.h5')
 
+# load an image
+image = imread(sys.argv[1]).astype(float)
 
+# normalise it in the same manner as we did for the training data
+image = image / 255.0
+
+#reshape
+image = image.reshape(1,1,28,28)
+
+# forward propagate and print index of most likely class 
+# (for MNIST this corresponds one-to-one with the digit)
+print("predicted digit: "+str(model.predict_classes(image)[0]))
+```
+
+We can run this with a sample image:
+
+```
+wget https://github.com/jonhare/vlc-deep-learning-labs/raw/master/1.PNG
+python keras-mnist-forward.py 1.PNG
+Using Theano backend.
+Using gpu device 0: GeForce GT 650M (CNMeM is disabled, cuDNN 5105)
+1/1 [==============================] - 0s
+predicted digit: 1
 ```
 
 
-
+__Try with some other images and see what results you get. You can replace the 1 in the `wget` url above with anything between 0 and 9 to download some different digits, or create your own 24x24 pixel images.__
 
 
 This is not an optimized network topology. Nor is a reproduction of a network topology from a recent paper. There is a lot of opportunity for you to tune and improve upon this model.
