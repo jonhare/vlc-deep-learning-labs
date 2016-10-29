@@ -518,7 +518,7 @@ The model takes about a couple of seconds to run per epoch on the Titan GPU (CPU
 
 Being able to train a model is fine, but in practice once we've trained the model we probably want to save the result so we can reuse it at a later time. Keras makes saving the model into an `HDF5` format file easy using `model.save(filepath)`. This will save the architecture of the model, the weights of the model, the training configuration (loss, optimizer) and the state of the optimizer, allowing to resume training exactly where you left off should you wish to continue training with more epochs.
 
-__Can you modify the code for the previous CNN architecture to save the trained result into a file called `bettercnn.h5`?__
+> __Can you modify the code for the previous CNN architecture to save the trained result into a file called `bettercnn.h5`?__
 
 ## Reading models and propagating input
 
