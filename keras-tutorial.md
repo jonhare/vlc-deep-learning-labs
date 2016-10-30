@@ -1,5 +1,7 @@
 # Learning to Deep Learn using Python, Keras, Theano, TensorFlow and a GPU
 
+_Jonathon Hare, 30th October 2016_
+
 ## Introduction and Acknowledgements
 This tutorial is largely based on the Jason Brownlee's ["Handwritten Digit Recognition using Convolutional Neural Networks in Python with Keras"](http://machinelearningmastery.com/handwritten-digit-recognition-using-convolutional-neural-networks-python-keras/). A number of changes have been made to ensure that it better fits our format, and we've added additional bits and exercises throughout.
 
