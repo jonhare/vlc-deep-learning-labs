@@ -17,7 +17,7 @@ Through this tutorial you'll learn how to:
 * How to serialise and deserialise trained models.
 * How to load your own image created outside of the MNIST dataset, and pass it through the network.
 * How to visualise the filters learned by the network.
-* How to implement advanced network features like branching and custom layers.
+* How to implement networks with branching and merging.
 
 ## Prerequisites
 To use this tutorial you'll use the Python 2 language with the `keras` deep learning library and the `theano` and `tensorflow` backends. We'll also use the `scikit-learn` and `numpy` packages.
@@ -563,12 +563,38 @@ predicted digit: 1
 
 ## Visualising the first layers filters and responses
 
-## More advanced network topologies and custom layers
+## More advanced network topologies
 
+Recent network models, such as the deep residual network (ResNet) and GoogLeNet architectures, do not follow a straight path from input to output. Instead, these models incorporate branches and merges to create a computation graph. Branching and merging is easy to implement in Keras as show in the following code snippet:
 
+```python
+from keras.layers import Input, merge
+from keras.models import Model
 
+def branch_model():
+	# create model
+	model = Sequential()
 
-This is not an optimized network topology. Nor is a reproduction of a network topology from a recent paper. There is a lot of opportunity for you to tune and improve upon this model.
+	x = Input(shape=(1, 28, 28))
+	left = Convolution2D(16, 1, 1, border_mode='same')(x)
+	right = Convolution2D(16, 5, 5, border_mode='same', input_shape=(1, 28, 28), activation='relu')(x)
+	y = merge([left, right], mode='sum')
+	block = Model(input=x, output=y)
 
-What is the best error rate score you can achieve?
+	model.add(block)
+	model.add(MaxPooling2D(pool_size=(2, 2)))
+	model.add(Dropout(0.2))
+	model.add(Flatten())
+	model.add(Dense(128, activation='relu'))
+	model.add(Dense(num_classes, activation='softmax'))
+	# Compile model
+	model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+	return model
+```
+
+This defines a variant of our initial simple CNN model in which the input is split into two paths and then merged again; the left hand path consists of a 1x1 convolution layer, whilst the right-hand path has a 5x5 convolutional layer. The 1x1 convolutions will have the effect of increasing the number of bands in the input from 1 to 16 (with each band a [potentially different] scalar multiple of the input]. In this case the left and right branches are merged by summing them together (element-wise, layer by layer).
+
+> __Exercise:__ Try running the above network model on the MNIST data. What accuracy do you achieve?
+
+> __Exercise:__ None of the network topology we have experimented with thus far are optimised. Nor are they reproductions of network topologies from recent papers. There is a lot of opportunity for you to tune and improve upon these models. What is the best error rate score you can achieve?
 
