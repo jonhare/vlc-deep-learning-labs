@@ -1,6 +1,12 @@
 # Learning to Deep Learn using Python, Keras, Theano, TensorFlow and a GPU
 
-_[Jonathon Hare, 30th October 2016](https://github.com/jonhare/vlc-deep-learning-labs)_
+_[Jonathon Hare, 4th April 2017](https://github.com/jonhare/vlc-deep-learning-labs)_
+
+## Change History
+
+- 20161030: Initial version
+- 20170404: Update to use Keras 2 API
+
 
 ## Introduction and Acknowledgements
 This tutorial is largely based on Jason Brownlee's ["Handwritten Digit Recognition using Convolutional Neural Networks in Python with Keras"](http://machinelearningmastery.com/handwritten-digit-recognition-using-convolutional-neural-networks-python-keras/) tutorial. A number of changes have been made to ensure that it better fits our format, and we've added additional bits and exercises throughout.
